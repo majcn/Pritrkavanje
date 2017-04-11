@@ -9,11 +9,17 @@ class BellMusicCreator:
         (clef.TrebleClef(), key.KeySignature(5), 'F#4'),
     ]
 
+    def __getInstrument(self):
+        i = instrument.Instrument()
+        i.instrumentName = ""
+        i.instrumentAbbreviation = ""
+        i.midiProgram = 14
+
+        return i # instrument.ChurchBells()
+
     def __getNote(self, n, t):
         return {
-            # 'X': note.Note(n, type='quarter'),
             'x': note.Note(n, type='eighth'),
-            # '_': note.Rest(n, type='quarter'),
             '-': note.Rest(n, type='eighth')
         }.get(t, None)
 
@@ -31,7 +37,8 @@ class BellMusicCreator:
             streamPart.makeMeasures(inPlace=True, finalBarline=bar.Repeat(direction='end', times=5))
             streamPart.measure(1).leftBarline = bar.Repeat(direction='start')
 
-            streamPart.insert(0, instrument.ChurchBells())
+
+            streamPart.insert(0, self.__getInstrument())
 
             output.insert(0, streamPart)
 
